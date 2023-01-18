@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+
 
 class UserController extends Controller
 {
@@ -15,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $users=User::paginate(6);
+        return view('users.index',['users'=>$users]);
     }
 
     /**
@@ -36,11 +37,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $users=User::create($request->all());
+        $users= new User;
+        $users->name=$request->name;
+        $users->email=$request->email;
+        $users->password=md5($request->password);
+        $users->is_admin=$request->is_admin;
+        $users->save();
+
         if($users){
             return redirect()->back()->with('User Created Successfully.');
         }
         return Redirect()->back()->with('User Fail created.');
+
     }
 
     /**
@@ -74,7 +82,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $users=User::find($id);
+        if(!$users){
+            return back()->with('error','user not found');
+        }
+        $users->update($request->all());
+        return back()->with('success','Users updated successfully');
     }
 
     /**
@@ -85,6 +98,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $users=User::find($id);
+        if(!$users){
+            return back()->with('error','user not found');
+        }
+        $users->delete();
+        return back()->with('success','Users Deleted successfully');
     }
 }

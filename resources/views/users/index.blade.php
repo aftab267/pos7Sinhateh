@@ -17,18 +17,55 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
                                         <th>Role</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($users as $key=>$user)
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email}}</td>
+                                        <td>@if($user->is_admin == 1) Admin
+                                            @else Cashier
+                                             @endif </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editUser{{ $user->id }}"><i class="fa fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser{{ $user->id }}"><i class="fa fa-trash"></i> Del </a>
+                                            </div>
+                                        </td>
                                     </tr>
+
+
+
+                                    {{-- delete modal --}}
+                                    <div class="modal right fade" id="deleteUser{{ $user->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">Delete User</h4>
+                                            <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form  action="{{ route('users.destroy',$user->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                   <p>Are you sure you want to delete <b> {{ $user->name }} ?</b></p>
+
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-danger" style="background: red;" >Delete</button>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
                                 </tbody>
 
                             </table>
@@ -95,6 +132,8 @@
                 </div>
                 </div>
             </div>
+            {{-- Model for edit user --}}
+
             <style>
                 .modal.right .modal-dialog{
                     top: 0;
