@@ -7,7 +7,7 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header"><h4 style="float:left;">Add User</h4>
-                         <a href="#" style="float: right;" class="btn btn-dark"
+                         <a href="#" style="float: right;" class="btn btn-primary"
                          data-bs-toggle="modal" data-bs-target="#addUser">
                             <i class="fa fa-plus"></i> Add New User</a></div>
                         <div class="card-body">
@@ -38,7 +38,50 @@
                                         </td>
                                     </tr>
 
+                                    {{-- Edit Modal --}}
+                                    <div class="modal right fade" id="editUser{{ $user->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title fs-5" id="staticBackdropLabel">Edit User</h4>
+                                            <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form  action="{{ route('users.update',$user->id)}}" method="POST">
+                                                    @csrf
+                                                    @method('put')
+                                                    <div class="form-group">
+                                                        <label for="" >Name</label>
+                                                        <input type="text" name="name" id="" value="{{ $user->name }}" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="">Email</label>
+                                                        <input type="email" name="email" id="" value="{{ $user->email }}" class="form-control">
+                                                    </div>
 
+                                                    <div class="form-group">
+                                                        <label for="">Password</label>
+                                                        <input type="password" name="password" id="" value="{{ $user->password }}" readonly class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="">Role</label>
+                                                       <select name="is_admin" id="" class="form-control">
+                                                            <option value="1" @if($user->is_admin==1) selected @endif>Admin</option>
+                                                            <option value="2"@if($user->is_admin==2) selected @endif>Cashier</option>
+                                                       </select>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-warning btn-block">Update User</button>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                           </div>
+                                        </div>
+                                </div>
 
                                     {{-- delete modal --}}
                                     <div class="modal right fade" id="deleteUser{{ $user->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -84,7 +127,8 @@
     </div>
 </div>
 {{-- Model of adding New User --}}
-            <div class="modal right fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"           aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal right fade" id="addUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -129,9 +173,9 @@
 
                     </div>
 
+                   </div>
                 </div>
-                </div>
-            </div>
+        </div>
             {{-- Model for edit user --}}
 
             <style>

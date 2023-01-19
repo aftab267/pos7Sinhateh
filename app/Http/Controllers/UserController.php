@@ -45,9 +45,9 @@ class UserController extends Controller
         $users->save();
 
         if($users){
-            return redirect()->back()->with('User Created Successfully.');
+            return redirect()->back()->with('success','User Created Successfully.');
         }
-        return Redirect()->back()->with('User Fail created.');
+        return Redirect()->back()->with('fail','User Fail created.');
 
     }
 
